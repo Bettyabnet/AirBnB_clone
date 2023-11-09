@@ -35,7 +35,8 @@ Read or watch:
 * Python packages
 * AirBnB clone
 
-## PYTHON SCRIPT REQUIREMENTS  
+## Python Script Requiments
+  
    - allowed editors: `vi`, `vim`, `emacs`   
    - the first line of all files should be exactly `#!/usr/bin/python3`   
    - all code should use the `PEP8` style (version 1.7.)   
@@ -44,7 +45,7 @@ Read or watch:
 
 ## Usage Examples for console
 
-### Interactive Mode
+## Interactive Mode
 
 ```python3
 ~/me$ ./console.py
@@ -60,7 +61,7 @@ EOF  help  quit
 ~/me$
 ```
 
-### Non-Interactive Mode
+## Non-Interactive Mode
 
 ```python3
 ~/me$ echo "help" | ./console.py
