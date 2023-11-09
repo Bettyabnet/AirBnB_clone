@@ -30,7 +30,7 @@ Read or watch:
   - cmd module wiki page
   - python unittest
 
-## concepts 
+## Concepts 
 
 * Python packages
 * AirBnB clone
