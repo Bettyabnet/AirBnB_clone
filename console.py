@@ -1,6 +1,15 @@
 #!/usr/bin/python3
 
 import cmd
+from models import storage
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+valid_classes = ['User', 'Place', 'State', 'City', 'Amenity', 'Review']
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,10 +35,23 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing when an empty line is entered."""
         pass
 
+    def do_create(self, arg):
+        """Create command to create a new instance of a class."""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        if args[0] not in valid_classes:
+            print("** class doesn't exist **")
+            return
+        new_obj = eval(args[0])()
+        new_obj.save()
+        print(new_obj.id)
+
     def do_show(self, arg):
         """Show command to display the string representation of an object."""
         args = arg.split()
-        if len(args) < 2:
+        if len(args) == 0:
             print("** class name missing **")
             return
         if args[0] not in valid_classes:
@@ -46,22 +68,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(obj)
 
-    def do_create(self, arg):
-        """Create command to create a new instance of a class."""
-        if not arg:
-            print("** class name missing **")
-            return
-        if arg not in valid_classes:
-            print("** class doesn't exist **")
-            return
-        new_obj = eval(arg)()
-        new_obj.save()
-        print(new_obj.id)
-
     def do_destroy(self, arg):
         """Destroy command to delete an instance."""
         args = arg.split()
-        if len(args) < 2:
+        if len(args) == 0:
             print("** class name missing **")
             return
         if args[0] not in valid_classes:
@@ -78,48 +88,20 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
-    def do_update(self, arg):
-        """Update command to update an instance."""
-        args = arg.split()
-        if len(args) < 2:
-            print("** class name missing **")
-            return
-        if args[0] not in valid_classes:
-            print("** class doesn't exist **")
-            return
-        if len(args) < 2:
-            print("** instance id missing **")
-            return
-        key = args[0] + "." + args[1]
-        objects = storage.all()
-        if key not in objects:
-            print("** no instance found **")
-            return
-        if len(args) < 3:
-            print("** attribute name missing **")
-            return
-        if len(args) < 4:
-            print("** value missing **")
-            return
-        attr_name = args[2]
-        attr_value = args[3]
-        obj = objects[key]
-        setattr(obj, attr_name, attr_value)
-        obj.save()
-
     def do_all(self, arg):
         """All command to display all instances of a class or all classes."""
         objects = storage.all()
         if not arg:
             obj_list = list(objects.values())
             print([str(obj) for obj in obj_list])
-        elif arg in valid_classes:
-            obj_list = [str(obj) for obj in objects.values() if type(obj).__name__ == arg]
-            print(obj_list)
         else:
-            print("** class doesn't exist **")
+            args = arg.split()
+            if args[0] in valid_classes:
+                obj_list = eval(args[0]).all()
+                print([str(obj) for obj in obj_list])
+            else:
+                print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
